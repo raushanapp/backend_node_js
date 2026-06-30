@@ -3,11 +3,11 @@ function encrypt(data) {
   return "encrypted data";
 }
 
-function sendRequest(url, data) {
+function send(url, data) {
   const encryptedData = encrypt(data);
   console.log(`Sending request to ${url} with data: ${encryptedData}`);
 }
 
-module.exports = { sendRequest, REQUEST_TIMEOUT };
+module.exports = { send, REQUEST_TIMEOUT };
 
 console.log("Hello from request.js");

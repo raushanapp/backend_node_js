@@ -1,4 +1,8 @@
-const { request, get } = require("https");
+// const { request, get } = require("https");
+const { request, get } = require("node:https"); // these are build in core node modules, because we add extra perfix
+
+//  ES6 way
+//  import http from "node:http"
 
 const req = request("https://www.google.com", (res) => {
   res.on("data", (chunk) => {
