@@ -5,7 +5,8 @@
   "main": "https.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node https.js"
+    "start": "node https.js",
+    "dev": "node  --watchhttps.js"
   },
   "keywords": [],
   "author": "",

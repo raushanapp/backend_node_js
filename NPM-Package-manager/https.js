@@ -9,11 +9,12 @@ const { handleResponse } = require("./response");
 //   console.log("====================================");
 //   return result;
 // }
+
 function makeRequest(url) {
   const response = sendRequest(url);
   const result = handleResponse(response);
   return result;
 }
-const response = makeRequest("https://www.google.com").then((result) => {
+const response = makeRequest("https://www.google.com/").then((result) => {
   console.log("RESPONSE:====>>>>", result);
 });
