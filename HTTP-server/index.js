@@ -1,5 +1,7 @@
 const http = require("http");
 
+const PORT = 3006;
+
 // const server = http.createServer((req, res) => {
 //   //   res.writeHead(200, { "content-type": "text/plain" }); // this allow the server to pass only plain text
 //   res.writeHead(200, { "content-type": "application/json" });
@@ -23,20 +25,26 @@ const friends = [
 
 server1.on("request", (req, res) => {
   const items = req.url.split("/");
-  if (items[1] === "friends") {
+  if (req.method === "POST" && items[1] === "friends") {
+    req.on("data", (data) => {
+      const friend = JSON.parse(data.toString());
+      console.log("Request received:", friend);
+      friends.push(friend);
+    });
+    // Handle POST request for adding a new friend
+  } else if (req.method === "GET" && items[1] === "friends") {
     // res.writeHead(200, { "Content-Type": "application/json" });
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
 
     if (items.length === 3) {
       const friendIndex = parseInt(items[2]);
-      const friend = friends[friendIndex];
+      const friend = friends[friendIndex - 1];
       res.end(JSON.stringify(friend));
     } else {
       res.end(JSON.stringify(friends));
     }
-    res.end(JSON.stringify({ id: 2, name: "john Done full name" }));
-  } else if (items[1] === "messages") {
+  } else if (req.method === "GET" && items[1] === "messages") {
     res.setHeader("Content-Type", "text/html");
     res.write("<html>");
     res.write("<body>");
@@ -50,6 +58,6 @@ server1.on("request", (req, res) => {
   }
 });
 
-server1.listen(3006, () => {
-  console.log("Server1 is listening on port 3006");
+server1.listen(PORT, () => {
+  console.log(`Server1 is listening on port ${PORT}`);
 });
