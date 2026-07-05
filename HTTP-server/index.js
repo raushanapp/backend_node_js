@@ -31,6 +31,7 @@ server1.on("request", (req, res) => {
       console.log("Request received:", friend);
       friends.push(friend);
     });
+    req.pipe(res);
     // Handle POST request for adding a new friend
   } else if (req.method === "GET" && items[1] === "friends") {
     // res.writeHead(200, { "Content-Type": "application/json" });
