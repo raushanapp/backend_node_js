@@ -10,14 +10,13 @@ app.use((req, res, next) => {
   next();
   //  actions go here....
   const delat = Date.now() - start;
-  console.log(`${req.method} ${req.url} ${delat} ms`);
+  console.log(`${req.method} ${req.baseUrl}   ${req.url} ${delat} ms`);
 });
 
 // this middleware tell the express parser to parse JSON bodies
 app.use(express.json());
 
 app.use("/friends", friendsRouter);
-
 app.use("/messages", messagesRouter);
 
 app.listen(PORT, () => {
