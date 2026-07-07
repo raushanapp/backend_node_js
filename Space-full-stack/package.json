@@ -1,0 +1,25 @@
+{
+  "name": "Space-full-stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "pnpm --dir server install",
+    "install-client": "pnpm --dir client install",
+    "setup": "pnpm run install-server && pnpm run install-client",
+    "server": "pnpm --dir server run watch",
+    "client": "pnpm --dir client run start",
+    "watch": "pnpm run server & pnpm run client",
+    "test": "pnpm --dir server run test && pnpm --dir client run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.9.0",
+      "onFail": "download"
+    }
+  }
+}
