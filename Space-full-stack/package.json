@@ -10,6 +10,7 @@
     "server": "pnpm --dir server run watch",
     "client": "pnpm --dir client run start",
     "watch": "pnpm run server & pnpm run client",
+    "deploy": "pnpm --dir client run build && pnpm --dir server start",
     "test": "pnpm --dir server run test && pnpm --dir client run test"
   },
   "keywords": [],
