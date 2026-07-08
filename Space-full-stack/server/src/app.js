@@ -3,10 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const planetsRouter = require("./routes/planets/planets.router");
+const launchessRouter = require("./routes/launches/launches.router");
 
 const app = express();
-
-app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use(
   cors({
@@ -18,10 +17,12 @@ app.use(
 app.use(morgan("combined"));
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use(planetsRouter);
+app.use(launchessRouter);
 
-app.get("/", (req, res) => {
+app.get("/*path", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
