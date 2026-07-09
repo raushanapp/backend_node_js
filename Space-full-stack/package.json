@@ -11,6 +11,7 @@
     "client": "pnpm --dir client run start",
     "watch": "pnpm run server & pnpm run client",
     "deploy": "pnpm --dir client run build && pnpm --dir server start",
+    "deploy-cluster": "pnpm --dir client run build && pnpm --dir server run cluster",
     "test": "pnpm --dir server test && pnpm --dir client test"
   },
   "keywords": [],
