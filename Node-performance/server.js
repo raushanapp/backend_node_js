@@ -27,8 +27,8 @@ app.get("/", (req, res) => {
 
 app.get("/timer", (req, res) => {
   //  delay the response
-  delay(9000);
-  return res.send(`Ding ding ding! ${process.pid}`);
+  delay(5000);
+  return res.send(`Beep beep beep! ${process.pid}`);
 });
 
 //  if we install pm2 tool then we don't have these code implemented and
