@@ -76,7 +76,7 @@ async function abortLaunchById(launchId) {
     { flightNumber: launchId },
     { upcoming: false, success: false },
   );
-  return aborted.matchedCount === 1 && aborted.modifiedCount === 1;
+  return aborted.modifiedCount === 1;
 }
 
 module.exports = {

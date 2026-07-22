@@ -7,7 +7,7 @@ const { loadPlanetsData } = require("./models/planets.model");
 
 const PORT = process.env.PORT || 8000;
 
-const MONOGO_URL = `mongodb+srv://raushan1995:Xd1rJ1agVdDL9FaL@space.xp1q2ex.mongodb.net/?appName=space?retryWrites=true&w=majority`;
+const MONOGO_URL = ``;
 
 const server = http.createServer(app);
 
