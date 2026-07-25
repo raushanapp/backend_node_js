@@ -2,10 +2,8 @@ const axios = require("axios");
 const launches = require("./launches.mongo");
 const planets = require("./planets.mongo");
 
-// const launches = new Map();
-
 const DEAULT_FLIGHTNUMBER = 100;
-
+// const launches = new Map();
 // const launch = {
 //   flightNumber: 100, // flight_number
 //   mission: "kepler Exploration name", // name
@@ -16,16 +14,15 @@ const DEAULT_FLIGHTNUMBER = 100;
 //   upcoming: true, // upcoming
 //   success: true, // success
 // };
-
 // launches.set(launch.flightNumber, launch);
 
 const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
-
 async function loadLaunchData() {
   try {
     const response = await axios.post(SPACEX_API_URL, {
       query: {},
       options: {
+        pagination: false, //  it's mean we are getting all data at once
         populate: [
           {
             path: "rocket",
@@ -58,8 +55,6 @@ async function loadLaunchData() {
         upcoming: launchDoc["upcoming"],
         success: launchDoc["success"],
       };
-
-      console.log(launch, "=====");
       await saveLaunch(launch);
     }
   } catch (error) {
@@ -81,7 +76,6 @@ async function getAllLaunches() {
 }
 
 // save  the new launches data
-
 async function saveLaunch(launch) {
   const planet = await planets.findOne({ keplerName: launch.target });
   if (!planet) {
