@@ -98,8 +98,12 @@ async function getLatestFlightNumer() {
   return latestLaunch ? latestLaunch.flightNumber : DEAULT_FLIGHTNUMBER;
 }
 
-async function getAllLaunches() {
-  return await launches.find({}, { _id: 0, __v: 0 });
+async function getAllLaunches({ skip, limit }) {
+  return await launches
+    .find({}, { _id: 0, __v: 0 })
+    .sort({ flightNumber: 1 })
+    .skip(skip)
+    .limit(limit);
 }
 
 // save  the new launches data
