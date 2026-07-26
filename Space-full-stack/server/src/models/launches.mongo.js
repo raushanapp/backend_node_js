@@ -13,7 +13,7 @@ const launchesSchema = new mongoose.Schema({
   rocket: { type: String, required: true },
   target: {
     type: String,
-    required: true,
+    required: false,
   },
   customers: [String],
   upcoming: { type: Boolean, required: true },
