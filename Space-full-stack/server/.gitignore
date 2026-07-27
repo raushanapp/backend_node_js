@@ -1,5 +1,5 @@
 node_modules
-.env
+
 
 /.pnp
 .pnp.js
@@ -16,7 +16,7 @@ build,
 public
 
 #  misc
-
+.env
 .DS_Store
 .env.local
 .env.development
