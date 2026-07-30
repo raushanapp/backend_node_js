@@ -3,16 +3,53 @@ const path = require("path");
 const https = require("https");
 const express = require("express");
 const helmet = require("helmet");
+const passport = require("passport");
+const { Strategy } = require("passport-google-oauth20");
 
-const PORT = 3001;
+const { googleAuthConfig } = require("./config");
+
+const PORT = 3000;
 
 const app = express();
 
-app.use(helmet());
+const AUTH_OPTIONS = {
+  clientID: googleAuthConfig.CLIENT_ID,
+  clientSecret: googleAuthConfig.CLIENT_SECRET,
+  callbackURL: "/auth/google/callback",
+};
+
+function verifyCallback(accessToken, refreshToken, profile, done) {
+  // TODO: Implement verification logic
+  console.log("Google Profile:", profile);
+  done(null, profile);
+}
+
+passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/secret", (req, res) => {
+app.use(helmet());
+
+app.use(passport.initialize());
+// app.use(passport.session());
+
+function checkLoggedIn(req, res, next) {
+  const isLoggedIn = true; // TODO
+
+  if (!isLoggedIn) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  next();
+}
+
+app.get("/auth/google", (req, res) => {});
+
+app.get("/auth/google/callback", (req, res) => {});
+
+app.get("/auth/logout", (req, res) => {});
+
+app.get("/secret", checkLoggedIn, (req, res) => {
   return res.status(200).send("Your personal secret value is 45!");
 });
 
