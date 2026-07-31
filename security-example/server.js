@@ -9,7 +9,6 @@ const { Strategy } = require("passport-google-oauth20");
 const { googleAuthConfig } = require("./config");
 
 const PORT = 3000;
-
 const app = express();
 
 const AUTH_OPTIONS = {
