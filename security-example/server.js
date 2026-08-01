@@ -10,7 +10,6 @@ const cookieSession = require("cookie-session");
 const { googleAuthConfig } = require("./config");
 
 const PORT = 3000;
-const app = express();
 
 const AUTH_OPTIONS = {
   clientID: googleAuthConfig.CLIENT_ID,
@@ -26,6 +25,26 @@ function verifyCallback(accessToken, refreshToken, profile, done) {
 
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
+// Save the session to the cookie
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Retrieve the session from the cookie
+passport.deserializeUser((id, done) => {
+  // User.findById(id)
+  //   .then((user) => {
+  //     done(null, user);
+  //   })
+  //   .catch((err) => {
+  //     done(err, null);
+  //   }); // req.user
+  done(null, id);
+});
+
+//  define the Express app
+const app = express();
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(helmet());
@@ -39,7 +58,6 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log("Session:", req.session);
   if (req.session && !req.session.regenerate) {
     req.session.regenerate = (cb) => {
       cb();
@@ -54,9 +72,10 @@ app.use((req, res, next) => {
 });
 
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 function checkLoggedIn(req, res, next) {
+  // req.user
   const isLoggedIn = true; // TODO
 
   if (!isLoggedIn) {
@@ -79,7 +98,7 @@ app.get(
   passport.authenticate("google", {
     failureRedirect: "/failure",
     successRedirect: "/",
-    session: false,
+    session: true,
   }),
   (req, res) => {
     console.log("Google callback received");
