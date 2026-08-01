@@ -76,12 +76,10 @@ app.use(passport.session());
 
 function checkLoggedIn(req, res, next) {
   // req.user
-  const isLoggedIn = true; // TODO
-
+  const isLoggedIn = req.isAuthenticated() && req.user;
   if (!isLoggedIn) {
     return res.status(401).send("Unauthorized");
   }
-
   next();
 }
 
