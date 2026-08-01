@@ -5,6 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
+const cookieSession = require("cookie-session");
 
 const { googleAuthConfig } = require("./config");
 
@@ -28,6 +29,29 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(helmet());
+
+app.use(
+  cookieSession({
+    name: "session",
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    keys: [googleAuthConfig.COOKIE_KEY_1, googleAuthConfig.COOKIE_KEY_2],
+  }),
+);
+
+app.use((req, res, next) => {
+  console.log("Session:", req.session);
+  if (req.session && !req.session.regenerate) {
+    req.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (req.session && !req.session.save) {
+    req.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
 
 app.use(passport.initialize());
 // app.use(passport.session());
