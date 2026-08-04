@@ -75,10 +75,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function checkLoggedIn(req, res, next) {
+  console.log("Current user is", req.user);
   // req.user
   const isLoggedIn = req.isAuthenticated() && req.user;
   if (!isLoggedIn) {
-    return res.status(401).send("Unauthorized");
+    return res.status(401).send({ error: "You must be logged in" });
   }
   next();
 }
@@ -103,7 +104,16 @@ app.get(
   },
 );
 
-app.get("/auth/logout", (req, res) => {});
+app.get("/auth/logout", (req, res, next) => {
+  // Remove req.user and clears any logged in sessions
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
 
 app.get("/secret", checkLoggedIn, (req, res) => {
   return res.status(200).send("Your personal secret value is 45!");
