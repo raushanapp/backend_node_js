@@ -1,29 +1,49 @@
 const express = require("express");
 const { buildSchema } = require("graphql");
-const { graphqlHTTP } = require("express-graphql");
+const { createYoga } = require("graphql-yoga");
 
 //  Define GraphQL schema
 const schema = buildSchema(
   `
     type Query {
-      description:String
-      price:Float
+      products: [Product!]!
+      orders:[Order!]!
+    }
+      
+    type Product {
+      id:ID!
+      description:String!
+      reviews:[Review!]!
+      price:Float!
+    }
+    
+    type Review {
+      rating:Int!
+      comment:String!
+    }
+    
+    type Order {
+      id:ID!
+      date : String!
+      subtotal : Float!
+      items:[OrderItem!]
+    }
+
+    type OrderItem {
+      product: Product!
+      quantity: Int!
     }
   `,
 );
 
-const root = {
-  description: "Red Shoes",
-  price: 42.12,
-};
-
 const PORT = 4000;
+
 const app = express();
+
 app.use(
   "/graphql",
-  graphqlHTTP({
+  createYoga({
     schema: schema,
-    rootValue: root,
   }),
 );
 
