@@ -10,17 +10,12 @@ const { makeExecutableSchema } = require("@graphql-tools/schema");
 const app = express();
 
 const typesArray = loadFilesSync(path.join(__dirname, "**/*.graphql"));
+const resolversArray = loadFilesSync(path.join(__dirname, "**/*.resolvers.js"));
 
 const schema = makeExecutableSchema({
   typeDefs: typesArray,
+  resolvers: resolversArray,
 });
-
-//  Define GraphQL schema
-
-const root = {
-  products: require("./products/products.model"),
-  orders: require("./orders/order.model"),
-};
 
 const PORT = 4000;
 
@@ -28,7 +23,6 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema: schema,
-    rootValue: root,
     graphiql: true,
   }),
 );
