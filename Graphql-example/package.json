@@ -18,8 +18,10 @@
     }
   },
   "dependencies": {
+    "@graphql-tools/load-files": "^7.0.1",
+    "@graphql-tools/schema": "^10.0.38",
     "express": "^5.2.1",
-    "graphql": "^17.0.2",
-    "graphql-yoga": "^5.21.2"
+    "express-graphql": "^0.12.0",
+    "graphql": "^17.0.2"
   }
 }

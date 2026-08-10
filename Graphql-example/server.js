@@ -1,49 +1,35 @@
+const path = require("path");
 const express = require("express");
-const { buildSchema } = require("graphql");
-const { createYoga } = require("graphql-yoga");
+// const { buildSchema } = require("graphql");
+// const { createYoga } = require("graphql-yoga");
 
-//  Define GraphQL schema
-const schema = buildSchema(
-  `
-    type Query {
-      products: [Product!]!
-      orders:[Order!]!
-    }
-      
-    type Product {
-      id:ID!
-      description:String!
-      reviews:[Review!]!
-      price:Float!
-    }
-    
-    type Review {
-      rating:Int!
-      comment:String!
-    }
-    
-    type Order {
-      id:ID!
-      date : String!
-      subtotal : Float!
-      items:[OrderItem!]
-    }
-
-    type OrderItem {
-      product: Product!
-      quantity: Int!
-    }
-  `,
-);
-
-const PORT = 4000;
+const { graphqlHTTP } = require("express-graphql");
+const { loadFilesSync } = require("@graphql-tools/load-files");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 const app = express();
 
+const typesArray = loadFilesSync(path.join(__dirname, "**/*.graphql"));
+
+const schema = makeExecutableSchema({
+  typeDefs: typesArray,
+});
+
+//  Define GraphQL schema
+
+const root = {
+  products: require("./products/products.model"),
+  orders: require("./orders/order.model"),
+};
+
+const PORT = 4000;
+
 app.use(
   "/graphql",
-  createYoga({
+  graphqlHTTP({
     schema: schema,
+    rootValue: root,
+    graphiql: true,
   }),
 );
 
